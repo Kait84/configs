@@ -1,0 +1,72 @@
+
+"general----------------------------------------------------------------
+set nocompatible
+filetype plugin indent on
+syntax on 
+set showcmd
+set showmode
+set hidden
+set ruler
+set smartindent
+set clipboard+=unnamedplus
+
+
+"visuals
+color desert   "murphy, industry, desert, koehler
+set guifont=Cascadia_Mono:h18
+set number relativenumber
+set cursorline
+
+
+"editing
+set tabstop=4 shiftwidth=4 expandtab
+set ignorecase smartcase
+set incsearch
+set hlsearch
+set wildmenu
+set wildmode=list:longest
+set wildignore=*.docx,*.jpg,*.png,*.pdf,*.exe,*.img
+set foldmethod=indent
+set ttyfast
+"set foldlevel=99           "opensAllFoldsByDefault
+
+
+"plugins----------------------------------------------------------------
+call plug#begin('~/.vim/plugged')
+    Plug 'BurntSushi/ripgrep'
+call plug#end()
+
+
+"mappings---------------------------------------------------------------
+nnoremap <SPACE> <Nop>
+let mapleader=" "
+
+inoremap " ""<left>
+inoremap ' ''<left>
+inoremap ( ()<left>
+inoremap [ []<left>
+inoremap { {}<left>
+inoremap {<CR> {<CR>}<ESC>O
+inoremap {;<CR> {<CR>};<ESC>O
+
+"scripting--------------------------------------------------------------
+let g:netrw_banner = 0
+
+function! DrawStatusLine()
+    hi StatusLine ctermbg=darkGray ctermfg=white
+    set laststatus=2
+    set statusline=\ %n\ %M\ \ %5.30f                                       "LeftSide: buffer, fileUnwritten, fileName
+    set statusline+=%=
+    set statusline+=\ %3.3b\/0x%2.2B\ \ \ \ row-col:%l-%c\ \ %p%%\ \ %Y\ \     "RightSide: char:ASCII/HEX, row-collumn, pageInPercent, fileType  
+endfunction
+
+function! StartUp()
+    call DrawStatusLine()
+    if argc() == 0
+        20Lex!
+    endif
+endfunction
+
+autocmd VimEnter * call StartUp()
+
+
